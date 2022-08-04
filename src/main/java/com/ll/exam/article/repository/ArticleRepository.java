@@ -51,4 +51,50 @@ public class ArticleRepository {
 
         return sql.insert();
     }
+
+    public void modify(long id, String title, String body, boolean isBlind) {
+        SecSql sql = myMap.genSecSql();
+        sql
+                .append("UPDATE article")
+                .append("SET modifiedDate = NOW()")
+                .append(", title = ?", title)
+                .append(", body = ?", body)
+                .append(", isBlind = ?", isBlind)
+                .append("WHERE id = ?", id);
+
+        sql.update();
+    }
+
+    public void delete(long id) {
+        SecSql sql = myMap.genSecSql();
+        sql
+                .append("DELETE FROM article")
+                .append("WHERE id = ?", id);
+
+        sql.update();
+    }
+
+    public ArticleDto getPrevArticle(long id) {
+        SecSql sql = myMap.genSecSql();
+        sql
+                .append("SELECT *")
+                .append("FROM article")
+                .append("WHERE id < ?", id)
+                .append("AND isBlind = 0")
+                .append("ORDER BY id DESC")
+                .append("LIMIT 1");
+        return sql.selectRow(ArticleDto.class);
+    }
+
+    public ArticleDto getNextArticle(long id) {
+        SecSql sql = myMap.genSecSql();
+        sql
+                .append("SELECT *")
+                .append("FROM article")
+                .append("WHERE id > ?", id)
+                .append("AND isBlind = 0")
+                .append("ORDER BY id ASC")
+                .append("LIMIT 1");
+        return sql.selectRow(ArticleDto.class);
+    }
 }

@@ -27,4 +27,24 @@ public class ArticleService {
     public long write(String title, String body, boolean isBlind) {
         return articleRepository.write(title, body, isBlind);
     }
+
+    public void modify(long id, String title, String body, boolean isBlind) {
+        articleRepository.modify(id, title, body, isBlind);
+    }
+
+    public void delete(long id) {
+        articleRepository.delete(id);
+    }
+
+    public ArticleDto getPrevArticle(ArticleDto articleDto) {
+        return getPrevArticle(articleDto.getId());
+    }
+
+    public ArticleDto getPrevArticle(long id) {
+        return articleRepository.getPrevArticle(id);
+    }
+
+    public ArticleDto getNextArticle(long id) {
+        return articleRepository.getNextArticle(id);
+    }
 }
