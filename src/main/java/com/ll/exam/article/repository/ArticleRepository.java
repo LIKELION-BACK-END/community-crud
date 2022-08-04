@@ -30,4 +30,25 @@ public class ArticleRepository {
                 .append("WHERE id = ?", id);
         return sql.selectRow(ArticleDto.class);
     }
+
+    public long getArticlesCount() {
+        SecSql sql = myMap.genSecSql();
+        sql
+                .append("SELECT COUNT(*)")
+                .append("FROM article");
+        return sql.selectLong();
+    }
+
+    public long write(String title, String body, boolean isBlind) {
+        SecSql sql = myMap.genSecSql();
+        sql
+                .append("INSERT INTO article")
+                .append("SET createdDate = NOW()")
+                .append(", modifiedDate = NOW()")
+                .append(", title = ?", title)
+                .append(", body = ?", body)
+                .append(", isBlind = ?", isBlind);
+
+        return sql.insert();
+    }
 }
